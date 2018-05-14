@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace Курсовая_по_ООП
 {
@@ -19,21 +20,26 @@ namespace Курсовая_по_ООП
         Jump
     }
 
+    // TODO: каждый класс в отдельный файл
     abstract class GameObject
     {
-        public Image Image;
+        protected Image[] _images;
+
+        protected Image _image;
+
+        public PictureBox PictureBox { get; set; }
 
         public Point Position;
     }
 
     abstract class MovableObject : GameObject
     {
-        public Image[] PlayerImages;
-
         public Direction Direction { get; set; }
 
-        public void Move()
-        { }
+        public virtual void Move(Direction direction)
+        {
+            Direction = direction;
+        }
     }
 
     abstract class StaticGameObject: GameObject
@@ -64,7 +70,11 @@ namespace Курсовая_по_ООП
 
     class Coin : Item
     {
-
+        public Coin()
+        {
+            // TODO: добавить загрузку картинки в конструкторы наследников Item
+            _image = Image.FromFile("");
+        }
     }
 
     class Key : Item
@@ -74,14 +84,36 @@ namespace Курсовая_по_ООП
 
     interface ICanJump
     {
-        public VerticalPosition VerticalPosition { get; set; }
+        VerticalPosition VerticalPosition { get; set; }
+
+        void Jump();
     }
 
     /// <summary>
     /// 
     /// </summary>
-    class Player : MovableObject
-    {     
+    class Player : MovableObject, ICanJump
+    {
+        public Player()
+        {
+            // TODO: загрузить в _images все картинки персонажа
+            _image = Image.FromFile("stand_png.png");
+        }
+
+        public VerticalPosition VerticalPosition { get; set; }
+
+        public void Jump()
+        {
+
+        }
+
+        public override void Move(Direction direction)
+        {
+            base.Move(direction);
+            var differenceX = direction == Direction.Right ? 50 : -50;
+            Position = new Point(Position.X + differenceX, Position.Y);
+        }
+
     }
 
     class Monster : MovableObject

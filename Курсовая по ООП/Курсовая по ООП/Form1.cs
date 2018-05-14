@@ -6,10 +6,16 @@ namespace Курсовая_по_ООП
 {
     public partial class Form1 : Form
     {
+        Game _game;
+
+
+
+
+
         bool right;
         bool left;
         bool jump;
-        int G = 30;
+        int G = 20;
         int Force;
         int index = 0;
 
@@ -18,20 +24,22 @@ namespace Курсовая_по_ООП
             InitializeComponent();
            // block.Top = screen.Height - block.Height;  //начальная позиция блока
             player.Top = screen.Height - player.Height;  //начальная позиция игрока
+
+            _game = new Game();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
             index++;
             //Gif replay
-            if (right == true && index % 15 == 0)
-            {
-                player.Image = Image.FromFile("run_right_gif.gif");
-            }
-            if (left == true && index % 15 == 0)
-            {
-                player.Image = Image.FromFile("run_left_gif.gif");
-            }
+            //if (right == true && index % 15 == 0)
+            //{
+            //    player.Image = Image.FromFile("run_right_gif.gif");
+            //}
+            //if (left == true && index % 15 == 0)
+            //{
+            //    player.Image = Image.FromFile("run_left_gif.gif");
+            //}
 
 
             //Slide Collision
@@ -98,6 +106,9 @@ namespace Курсовая_по_ООП
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
+            // Вызов метода класса Game для обработки нажатия клавиши, перехваченного формой
+            _game.HandleKeyDown((int)e.KeyCode);
+
             if (e.KeyCode == Keys.Right)
             {
                 right = true;
